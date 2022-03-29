@@ -1,19 +1,46 @@
-﻿namespace TollCollectorLib.BillingSystem
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TollCollectorLib.BillingSystem
 {
     public class Account
     {
         public Account(string license, Owner owner)
         {
-            License = license;
-            Owner = owner;
+            this.license = license;
+            this.Owner = owner;
         }
 
-        public Owner Owner { get; private set; }
+        private readonly string license;
+        private Owner owner;
 
-        public string License { get; }
+        public Owner Owner
+        {
+            get { return owner; }
+            private set
+            {
+                owner = value;
+            }
+        }
 
-        public string State 
-            => License[^2..];
+        public string License
+        {
+            get
+            {
+                return license;
+            }
+        }
+
+        public string State
+        {
+            get
+            {
+                return license.Substring(license.Length - 2);
+            }
+        }
     }
 }
 

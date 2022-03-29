@@ -15,20 +15,28 @@ namespace TollCollectorLib.BillingSystem
         { }
 
         public IEnumerable<Account> GetAccounts()
-            => accounts.Select(x => x.Value);
+        {
+            return accounts.Select(x => x.Value);
+        }
 
+        // TODO: Convert to ternary
         public static AccountList FetchAccounts(string countyName)
-            => countyName != "Test"
-                ? null
-                : new AccountList
+        {
+            if (countyName != "Test")
+            {
+                return null;
+            }
+
+            return new AccountList
+            {
+                accounts = new Dictionary<string, Account>
                 {
-                    accounts = new Dictionary<string, Account>
-                    {
-                        { "BSF-846-WA", new Account("BSF-846-WA", new Owner("Greg", "Smith")) },
-                        { "23456-WA", new Account("23456-WA", new Owner("Simon", "Jones")) },
-                        { "AABBCC-DD-WA", new Account("AABBCC-DD-WA", new Owner("Sara", "Green")) }
-                    }
-                };
+                    { "BSF-846-WA", new Account("BSF-846-WA", new Owner("Greg", "Smith")) },
+                    { "23456-WA", new Account("23456-WA", new Owner("Simon", "Jones")) },
+                    { "AABBCC-DD-WA", new Account("AABBCC-DD-WA", new Owner("Sara", "Green")) }
+                }
+            };
+        }
 
         public async Task<Account> LookupAccountAsync(string license)
         {

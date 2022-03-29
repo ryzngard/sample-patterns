@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\ExternalSystems\ExternalSystems.csproj" />
   </ItemGroup>
