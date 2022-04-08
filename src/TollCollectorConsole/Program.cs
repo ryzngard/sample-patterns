@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TollCollectorConsole
 {
+    record A(string Name);
+    record B(A A, string Title);
+
     public class Program
     {
         public static async Task Main(string[] args)

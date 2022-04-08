@@ -11,6 +11,40 @@ dotnet_diagnostic.IDE0032.severity = error
 
 > Note: a lot of the editorconfig is generated defaults
 
+## New Language Features That "Just Work"
+
+* file scoped namespaces
+* target type new
+* Simplified property patterns `is { Prop1: { Prop2: value }}` becomes `is { Prop1.Prop2: value }`
+
+## New Language Features That Have Support But Need Humans
+
+* Nullability 
+* pattern matching
+
+
+## Benchmark.NET
+
+[Benchmark.NET](https://benchmarkdotnet.org/) is a way to measure various aspects of a program through multiple iterations. Very useful for a way to determine impact of changes in a given scenario.
+
+Since it only requires a method that can be run, anything that is unit testable is likely a good candidate here. 
+
+<details>
+<summary> Results from run </summary>
+
+> BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22000
+> 11th Gen Intel Core i9-11950H 2.60GHz, 1 CPU, 16 logical and 8 physical > cores
+> .NET Core SDK=6.0.300-preview.22178.8
+>  [Host]     : .NET Core 6.0.3 (CoreCLR 6.0.322.12309, CoreFX 6.0.322.12309), X64 RyuJIT
+>  DefaultJob : .NET Core 6.0.3 (CoreCLR 6.0.322.12309, CoreFX 6.0.322.12309), X64 RyuJIT
+
+---------------------------------------------------------------------
+| Method	| Mean	| Error |	StdDev |	Gen 0 |	Gen 1	| Gen 2 |	Allocated |
+|-----------|-----------|------------|-----------|----|---|---|---------|
+| Scenario1 |	2.073 s |	0.0296 s |	0.0277 s |	- |	- |	- |	3.48 MB |
+
+</details>
+
 ## Records
 
 ```csharp
@@ -154,6 +188,31 @@ internal class Person : IEquatable<Person>
 }
 ```
 </details>
+
+## "Withers": the `with` statement
+
+Withers provide a way to do [nondestructive mutation](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#nondestructive-mutation). It makes a copy of the item, and then modifies the values to be updated. The original item is left untouched, and the new item contains the modified values. 
+
+Record classes and ALL structs support `with` (as of C# 10). 
+
+### Note:
+
+Since `with` modifies only the copy, certain truths are mantained if the value itself is the same. For example:
+```csharp
+using System;
+
+var p1 = new Point { x = 1, y = 1};
+var p2 = p1 with { };
+Console.WriteLine(p1 == p2); // true
+
+var p3 = p1 with { x = 1 };
+Console.WriteLine(p1 == p3); // true
+
+var p4 = p1 with { x = 2 };
+Console.WriteLine(p1 == p4); // false
+
+record struct Point(int x, int y);
+````
 
 ## Immutability 
 
